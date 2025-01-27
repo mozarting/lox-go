@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mozarting/lox/internal/lexer"
+	"github.com/mozarting/lox/internal/runner"
 )
 
 func ReadFile(f string) {
@@ -14,5 +14,5 @@ func ReadFile(f string) {
 		return
 	}
 	fmt.Println(string(file_content))
-	lexer.Run(string(file_content))
+	runner.Run(string(file_content))
 }

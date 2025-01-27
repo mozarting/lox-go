@@ -20,7 +20,7 @@ func New(input string) *Lexer {
 	return &Lexer{source: input}
 }
 
-func (l *Lexer) scanTokens() []token.Token {
+func (l *Lexer) ScanTokens() []token.Token {
 	for !l.isAtEnd() {
 		l.start = l.current
 		l.scanToken()
@@ -109,8 +109,13 @@ func (l *Lexer) identifier() {
 	for l.isAlphaNumeric(rune(l.peek())) {
 		l.advance()
 	}
+	text := l.source[l.start:l.current]
+	tokenType, ok := token.Keywords[text]
+	if !ok {
+		tokenType = token.IDENTIFIER
+	}
 
-	l.addToken(token.IDENTIFIER)
+	l.addToken(tokenType)
 }
 
 func (l *Lexer) isAlpha(c rune) bool {
@@ -179,9 +184,9 @@ func (l *Lexer) isAtEnd() bool {
 }
 
 func (l *Lexer) advance() rune {
-	curr := rune(l.source[l.current])
+	current := rune(l.source[l.current])
 	l.current++
-	return curr
+	return current
 }
 
 func (l *Lexer) addToken(t token.TokenType) {
@@ -207,12 +212,4 @@ func (l *Lexer) peek() byte {
 		return '\x00'
 	}
 	return l.source[l.current]
-}
-
-func Run(input string) {
-	l := New(input)
-	tokens := l.scanTokens()
-	for _, t := range tokens {
-		fmt.Printf("Type: %s Lexeme: %s Literal: %s Line: %d\n", t.Type, t.Lexeme, t.Literal, t.Line)
-	}
 }

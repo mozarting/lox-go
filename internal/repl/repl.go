@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mozarting/lox/internal/lexer"
+	"github.com/mozarting/lox/internal/runner"
 )
 
 func RunPrompt() {
@@ -16,6 +16,6 @@ func RunPrompt() {
 			break
 		}
 		line := scanner.Text()
-		lexer.Run(line)
+		runner.Run(line)
 	}
 }
